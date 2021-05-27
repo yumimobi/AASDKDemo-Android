@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/reportUserIdCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="showUserIdCard"
+        android:text="实名认证" />
+
+    <Button
+        android:id="@+id/isLogined"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reportUserIdCard"
+        android:onClick="isLogined"
+        android:text="登录状态" />
+
+    <Button
+        android:id="@+id/isAuthenticated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="isAuthenticated"
+        android:layout_below="@+id/isLogined"
+        android:text="实名认证状态" />
+
+    <Button
+        android:id="@+id/leftTimeOfCurrentUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/isAuthenticated"
+        android:onClick="leftTimeOfCurrentUser"
+        android:text="用户剩余有效时长" />
+
+    <TextView
+        android:id="@+id/showToast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
