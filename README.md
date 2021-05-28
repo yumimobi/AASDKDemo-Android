@@ -1,3 +1,5 @@
+[See the English Guide](https://github.com/yumimobi/AASDKDemo-Android/wiki)
+
 # 1. 概述
 
 ## 1.1 面向人群
