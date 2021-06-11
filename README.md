@@ -1,5 +1,3 @@
-[See the English Guide](https://github.com/yumimobi/AASDKDemo-Android/wiki)
-
 # 1. 概述
 
 ## 1.1 面向人群
@@ -54,7 +52,7 @@ allprojects {
 
 <img src="resources\antiAddiction-ZplayConfig.jpg" alt="antiAddiction-ZplayConfig">
 
->[ZplayConfig.xml 下载](https://github.com/yumimobi/AASDKDemo-Android/blob/master/app/src/main/assets/ZplayConfig.xml)
+>[ZplayConfig.xml 下载](https://github.com/yumimobi/AntiAddictionSystemDemo-Android/blob/master/app/src/main/assets/ZplayConfig.xml)
 
 ## 3.2 修改ZplayConfig.xml文件中的配置
 <img src="resources\antiAddiction-ZplayConfig1.png" alt="antiAddiction-ZplayConfig1">
@@ -79,9 +77,14 @@ allprojects {
                 //游客登录失败
             }
 
+             @Override
+            public void realNameAuthenticateSuccess(String isAdult) {
+                //实名认证成功，是否成年：isAdult
+            }
+
             @Override
-            public void realNameAuthenticateResult(boolean isSuccess) {
-                //实名认证状态：isSuccess
+            public void realNameAuthenticateFailed() {
+                //实名认证失败
             }
 
             @Override
@@ -97,18 +100,79 @@ allprojects {
                 // 收到此回调 3s 后，会展示未成年时长已用尽弹窗
                 // 游戏请在收到回调 3s 内处理未尽事宜
             }
+
+             @Override
+            public void onClickExitGameButton() {
+                // 用户点击退出游戏按钮，或者是未成年人时长已到，用户点击退出游戏
+            }
+
+            @Override
+            public void onClickTempLeaveButton() {
+                //用户点击实名认证界面暂不认证按钮
+            }
+
+            @Override
+            public void onCurrentUserInfo(long leftTime, boolean isAuth, String isAdult) {
+                 // 此回调每秒执行一次
+                 // leftTime: 当前用户剩余时间，-1无限制
+                 // isAuth: 是否已认证
+                 // ageGroup: 用户年龄段
+            }
+
+             @Override
+            public void onCurrentUserCanPay() {
+                //当前用户可以购买
+            }
+
+            @Override
+            public void onCurrentUserBanPay() {
+                //当前用户禁止购买，SDK会弹出禁止购买提示
+
+            }
         });
 ```  
 
-## 4.2 展示实名认证接口
+## 4.2 展示游客和未成年人剩余时长提示
+每次进入游戏主界面时，展示游客和未成年人用户在线时长提示界面
+此界面由游戏在初始化后调用。
+需判断SDK已登录，如SDK未登录，则在SDK登录成功的回调中调用。
+成年人无需展示此界面。
+```java
+ if (AntiAddictionSystemSDK.isLogined(this)) {
+    AntiAddictionSystemSDK.showAlertInfoDialog(this);
+ }
+``` 
+
+
+## 4.3 实名认证接口
+
+### 4.3.1 展示实名认证接口（用户可点击暂不认证）
 如果游戏主界面上提供了用户点击实名认证的功能，可调用下面的接口，展示防沉迷SDK的实名认证界面，为用户提供实名认证功能
 ```java
 AntiAddictionSystemSDK.showRealNameDialog(Activity);
 ```  
 
-## 4.3 其他接口
+### 4.3.2 展示实名认证接口（用户可点击退出游戏)
+使用场景:
+如果用户点击退出游戏，开发者需要在onClickExitGameButton();此回调中展示实名认证获取奖励界面（此界面由开发者自己实现），此界面提供两个交互按钮。
+退出游戏按钮：点击此按钮退出游戏。
+实名认证按钮：点击此按钮再次展示SDK提供的实名认证界面。
+```java
+AntiAddictionSystemSDK.showForceExitRealNameDialog(Activity);
+```  
 
-### 4.3.1 游戏退到后台接口(必选)
+
+## 4.4 设置渠道UserId接口(华为，联想渠道必选)
+为兼容华为，联想渠道登录支付SDK进行实名认证兼容，游戏需要在华为联想登录之后，调用下面的接口设置渠道UserId。
+
+注意: 华为，联想渠道防沉迷只有在调用下面的接口之后才会启动防沉迷的功能，否则将不会启动防沉迷SDK的任何功能
+```java
+AntiAddictionSystemSDK.setChannelUserId(Activity, userId);
+```
+
+## 4.5 其他接口
+
+### 4.5.1 游戏退到后台接口(必选)
 当用户按home键，将游戏退出到后台时，请调用下面的接口
 
 <span style="color:rgb(255,0,0);">
@@ -119,7 +183,7 @@ AntiAddictionSystemSDK.showRealNameDialog(Activity);
 AntiAddictionSystemSDK.onPause();
 ```
 
-### 4.3.2 游戏恢复前台接口(必选)
+### 4.5.2 游戏恢复前台接口(必选)
 当用户将游戏恢复到前台时，请调用下面的接口
 
 <span style="color:rgb(255,0,0);">
@@ -131,7 +195,7 @@ AntiAddictionSystemSDK.onResume();
 ```
 
 
-## 4.3.3 获取游客登录状态接口(可选)
+### 4.5.3 获取游客登录状态接口(可选)
 ```java
 //获取游客登录状态
 //true:登录成功
@@ -139,19 +203,43 @@ AntiAddictionSystemSDK.onResume();
 boolean isLogined = AntiAddictionSystemSDK.isLogined(Activity);
 ```
 
-## 4.3.4 获取实名认证状态接口(可选)
+### 4.5.4 获取实名认证状态接口(可选)
 ```java
 //获取实名认证状态
-//true:认证成功
-//false:认证失败
+//false:未认证
+//true:已认证
 boolean isAuthenticated = AntiAddictionSystemSDK.isAuthenticated(Activity);
 ```
 
+### 4.5.5 查询用户是否成年接口(可选)
+```java
+//查询用户是否成年
+//unknown:未认证
+//adult:成年人
+//nonage:未成年人
+String isAdult = AntiAddictionSystemSDK.isAdult(Activity);
+```
 
-## 4.3.4 获取用户剩余可玩时长接口(可选)
+
+### 4.5.6 获取用户剩余可玩时长接口(可选)
 ```java
 //获取用户剩余可玩时长
 //-1:表示用户为成年人，不受限制
 //大于0的数:用户的剩余可玩时长，单位秒
 long leftTimeOfCurrentUser = AntiAddictionSystemSDK.leftTimeOfCurrentUser(Activity)
 ```
+
+
+### 4.5.7 展示查看详情界面(可选)
+此界面展示中宣部关于防沉迷政策的相关规则
+```java
+AntiAddictionSystemSDK.showTimeTipsDialog(Activity);
+```
+
+### 4.5.8 检测消费限制(可选)
+未登录及未成年人无法在游戏中付费，会显示消费限制界面。
+成年人无限制
+```java
+AntiAddictionSystemSDK.checkCurrentUserPay(Activity);
+```
+
