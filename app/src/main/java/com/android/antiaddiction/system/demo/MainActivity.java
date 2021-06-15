@@ -8,11 +8,11 @@ import android.widget.TextView;
 
 
 import com.android.antiaddiction.callback.AntiAddictionCallback;
-import com.android.antiaddiction.callback.LenovoUserIdCallback;
 import com.android.antiaddiction.demo.R;
 import com.android.antiaddiction.dialog.IdCardDialogBuilder;
 import com.android.antiaddiction.system.AntiAddictionSystemSDK;
 import com.android.antiaddiction.utils.ToastUtils;
+import com.android.antiaddiction.utils.enumbean.AgeGroup;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void realNameAuthenticateSuccess(String isAdult) {
-                showToast.setText("实名认证成功，是否成年：" + isAdult);
+            public void realNameAuthenticateSuccess() {
+                showToast.setText("实名认证成功");
             }
 
             @Override
@@ -63,8 +63,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCurrentUserInfo(long leftTime, boolean isAuth, String isAdult) {
+            public void onCurrentUserInfo(long leftTime, boolean isAuth, AgeGroup isAdult) {
                 showToast.setText("当前用户剩余可玩时长(-1表示无限制)：" + leftTime + "，是否实名认证：" + isAuth + "，是否成年：" + isAdult);
+
             }
 
             @Override

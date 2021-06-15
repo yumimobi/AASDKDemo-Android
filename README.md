@@ -78,8 +78,8 @@ allprojects {
             }
 
              @Override
-            public void realNameAuthenticateSuccess(String isAdult) {
-                //实名认证成功，是否成年：isAdult
+            public void realNameAuthenticateSuccess() {
+                //实名认证成功
             }
 
             @Override
@@ -112,11 +112,19 @@ allprojects {
             }
 
             @Override
-            public void onCurrentUserInfo(long leftTime, boolean isAuth, String isAdult) {
+            public void onCurrentUserInfo(long leftTime, boolean isAuth, AgeGroup ageGroup) {
                  // 此回调每秒执行一次
                  // leftTime: 当前用户剩余时间，-1无限制
+
                  // isAuth: 是否已认证
+                 // true:已认证
+                 // false:未认证
+
                  // ageGroup: 用户年龄段
+                 // AgeGroup.unknown: 年龄段位置，用户未认证
+                 // AgeGroup.adult: 成年
+                 // AgeGroup.nonage: 未成年
+                 
             }
 
              @Override
@@ -167,6 +175,8 @@ AntiAddictionSystemSDK.showForceExitRealNameDialog(Activity);
 
 注意: 华为，联想渠道防沉迷只有在调用下面的接口之后才会启动防沉迷的功能，否则将不会启动防沉迷SDK的任何功能
 ```java
+//设置渠道UserId接口
+//userId:华为，联想渠道登录SDK返回的用户Id
 AntiAddictionSystemSDK.setChannelUserId(Activity, userId);
 ```
 
@@ -214,10 +224,10 @@ boolean isAuthenticated = AntiAddictionSystemSDK.isAuthenticated(Activity);
 ### 4.5.5 查询用户是否成年接口(可选)
 ```java
 //查询用户是否成年
-//unknown:未认证
-//adult:成年人
-//nonage:未成年人
-String isAdult = AntiAddictionSystemSDK.isAdult(Activity);
+// AgeGroup.unknown: 年龄段位置，用户未认证
+// AgeGroup.adult: 成年
+// AgeGroup.nonage: 未成年
+AgeGroup ageGroup = AntiAddictionSystemSDK.isAdult(Activity);
 ```
 
 
