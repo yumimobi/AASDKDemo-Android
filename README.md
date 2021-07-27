@@ -21,7 +21,7 @@ Java: > JDK 7
 ```groovy
 dependencies {
     // AntiAddictionSDK
-    implementation "io.github.yumimobi:antiaddiction:1.0.1"
+    implementation "io.github.yumimobi:antiaddiction:1.0.3"
 ｝
 ```
 
@@ -85,6 +85,11 @@ allprojects {
             @Override
             public void realNameAuthenticateFailed() {
                 //实名认证失败
+            }
+
+            @Override
+            public void realNameAuthSuccessStatus() {
+                //实名认证成功的状态回调，当调用 4.6.3 更新防沉迷数据接口，并且服务端返回已经实名认证后才会返回本回调
             }
 
             @Override
@@ -270,4 +275,9 @@ AntiAddictionSystemSDK.setGroupId(Activity, groupId);
 ### 4.6.3 更新防沉迷数据接口(可选)
 ```java
 AntiAddictionSystemSDK.updateDataReport();
+```
+
+### 4.6.4 获取分组id接口(可选)
+```java
+AntiAddictionSystemSDK.getGroupId(Activity);
 ```

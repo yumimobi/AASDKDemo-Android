@@ -47,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
+            public void realNameAuthSuccessStatus() {
+                showToast.setText("实名认证成功状态回调：");
+            }
+
+            @Override
             public void noTimeLeftWithTouristsMode() {
                 // 游客时长已用尽(1h/15 days)
                 // 收到此回调 3s 后，会展示游客时长已用尽弹窗
@@ -93,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
                 showToast.setText("当前用户禁止购买");
             }
         });
+
+
 
     }
 
