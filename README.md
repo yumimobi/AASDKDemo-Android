@@ -21,7 +21,7 @@ Java: > JDK 7
 ```groovy
 dependencies {
     // AntiAddictionSDK
-    implementation "io.github.yumimobi:antiaddiction:1.0.0"
+    implementation "io.github.yumimobi:antiaddiction:1.0.1"
 ｝
 ```
 
@@ -253,3 +253,21 @@ AntiAddictionSystemSDK.showTimeTipsDialog(Activity);
 AntiAddictionSystemSDK.checkCurrentUserPay(Activity);
 ```
 
+## 4.6 用户分组相关接口
+
+### 4.6.1 获取用户标识接口(可选)
+```java
+AntiAddictionSystemSDK.getUserCode(Activity);
+```
+
+### 4.6.2 设置分组id接口(可选)
+// 1: 新用户
+// 2：老用户
+```java
+AntiAddictionSystemSDK.setGroupId(Activity, groupId);
+```
+
+### 4.6.3 更新防沉迷数据接口(可选)
+```java
+AntiAddictionSystemSDK.updateDataReport();
+```
