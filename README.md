@@ -21,7 +21,7 @@ Java: > JDK 7
 ```groovy
 dependencies {
     // AntiAddictionSDK
-    implementation "io.github.yumimobi:antiaddiction:1.0.3"
+    implementation "io.github.yumimobi:antiaddiction:1.0.6"
 ｝
 ```
 
@@ -278,6 +278,9 @@ AntiAddictionSystemSDK.updateDataReport();
 ```
 
 ### 4.6.4 获取分组id接口(可选)
+// -1: 游戏未设置
+// 1: 新用户
+// 2：老用户
 ```java
 AntiAddictionSystemSDK.getGroupId(Activity);
 ```

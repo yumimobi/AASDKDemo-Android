@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    implementation 'io.github.yumimobi:antiaddiction:1.0.3'
+    implementation 'io.github.yumimobi:antiaddiction:1.0.6'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'android.arch.navigation:navigation-fragment:1.0.0'
     implementation 'android.arch.navigation:navigation-ui:1.0.0'
