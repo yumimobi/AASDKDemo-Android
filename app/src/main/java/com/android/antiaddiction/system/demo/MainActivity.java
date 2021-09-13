@@ -3,11 +3,13 @@ package com.android.antiaddiction.system.demo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 
 import com.android.antiaddiction.callback.AntiAddictionCallback;
+import com.android.antiaddiction.callback.UserGroupCallback;
 import com.android.antiaddiction.demo.R;
 import com.android.antiaddiction.dialog.IdCardDialogBuilder;
 import com.android.antiaddiction.system.AntiAddictionSystemSDK;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void realNameAuthSuccessStatus() {
-                showToast.setText("实名认证成功状态回调：");
+                showToast.setText("实名认证成功的状态回调");
             }
 
             @Override
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 // 游客时长已用尽(1h/15 days)
                 // 收到此回调 3s 后，会展示游客时长已用尽弹窗
                 // 游戏请在收到回调 3s 内处理未尽事宜
+                Log.d("TAG", "-----------noTimeLeftWithTouristsMode: ");
                 showToast.setText("游客时长已用尽");
             }
 
@@ -97,9 +100,13 @@ public class MainActivity extends AppCompatActivity {
                 //当前用户禁止购买
                 showToast.setText("当前用户禁止购买");
             }
+
+            @Override
+            public void onCurrentChannelUserInfo(AgeGroup ageGroup) {
+                //当前华为，联想渠道用户的实名认证状态
+                showToast.setText("当前渠道用户的实名认证状态：" + ageGroup);
+            }
         });
-
-
 
     }
 
@@ -152,6 +159,21 @@ public class MainActivity extends AppCompatActivity {
         AntiAddictionSystemSDK.checkCurrentUserPay(this);
     }
 
+    //华为渠道，当华为登录失败时调用，走游客逻辑，会给游戏返回一个noTimeLeftWithTouristsMode回调，游戏在此回调中引导用户登录华为账号
+    public void touristsLogin(View view) {
+        AntiAddictionSystemSDK.setGroupId(this, 1);
+        AntiAddictionSystemSDK.touristsModeLogin(this);
+    }
+
+    public void checkUserGroupId(View view) {
+        AntiAddictionSystemSDK.checkUserGroupId(this, "", new UserGroupCallback() {
+            @Override
+            public void onUserGroupSuccessResult(String userGroup) {
+                showToast.setText("获取UserGroup(-1:没获取到,1:新用户,2:老用户):" + userGroup);
+            }
+        });
+    }
+
 
     @Override
     protected void onPause() {
@@ -168,6 +190,12 @@ public class MainActivity extends AppCompatActivity {
         AntiAddictionSystemSDK.onResume();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("TAG", "----onDestroy: ");
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

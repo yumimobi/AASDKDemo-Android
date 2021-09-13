@@ -21,7 +21,7 @@ Java: > JDK 7
 ```groovy
 dependencies {
     // AntiAddictionSDK
-    implementation "io.github.yumimobi:antiaddiction:1.0.6"
+    implementation "io.github.yumimobi:antiaddiction:1.1.1"
 ｝
 ```
 
@@ -141,6 +141,16 @@ allprojects {
             public void onCurrentUserBanPay() {
                 //当前用户禁止购买，SDK会弹出禁止购买提示
 
+            }
+
+            @Override
+            public void onCurrentChannelUserInfo(AgeGroup ageGroup) {
+                //当前华为，联想渠道用户的实名认证状态
+                // ageGroup: 用户年龄段
+                // AgeGroup.unknown: 年龄段位置，用户未认证
+                // AgeGroup.adult: 成年
+                // AgeGroup.nonage: 未成年
+                 
             }
         });
 ```  
@@ -283,4 +293,20 @@ AntiAddictionSystemSDK.updateDataReport();
 // 2：老用户
 ```java
 AntiAddictionSystemSDK.getGroupId(Activity);
+```
+
+### 4.6.5 检测用户新老用户分组接口(可选)
+
+```java
+/** 参数说明
+* Activity 
+* zplayId:之前用户系统的zplayId，没有可以传""
+* UserGroupCallback:回调
+*/
+AntiAddictionSystemSDK.checkUserGroupId(Activity, "", new UserGroupCallback() {
+@Override
+public void onUserGroupSuccessResult(String userGroup) {
+    //获取UserGroup(-1:没获取到,1:新用户,2:老用户)
+}
+});
 ```
