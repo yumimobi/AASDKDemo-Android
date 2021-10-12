@@ -21,7 +21,7 @@ Java: > JDK 7
 ```groovy
 dependencies {
     // AntiAddictionSDK
-    implementation "io.github.yumimobi:antiaddiction:1.1.1"
+    implementation "io.github.yumimobi:antiaddiction:1.1.5"
 ｝
 ```
 
