@@ -21,7 +21,7 @@ Java: > JDK 7
 ```groovy
 dependencies {
     // AntiAddictionSDK
-    implementation "io.github.yumimobi:antiaddiction:1.1.5"
+    implementation "io.github.yumimobi:antiaddiction:1.1.9"
 ｝
 ```
 
@@ -129,6 +129,8 @@ allprojects {
                  // AgeGroup.unknown: 年龄段位置，用户未认证
                  // AgeGroup.adult: 成年
                  // AgeGroup.nonage: 未成年
+
+                 //如果 leftTime = 0, 且isAuth = false，请调用4.3.2接口
                  
             }
 
