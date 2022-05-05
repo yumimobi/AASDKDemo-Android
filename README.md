@@ -42,7 +42,7 @@ allprojects {
 
  ```groovy
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,Synthetic,EnclosingMethod
--keep class com.android.antiaddiction.system.** { *;}
+-keep class com.android.antiaddiction.** { *;}
 ```
 
 
